@@ -116,6 +116,10 @@ class splunk::forwarder (
   # dependency chains.
   include splunk::virtual
 
+  # This realize() call is because the collectors don't seem to work well with
+  # arrays. They'll set the dependencies but not realize all Service resources
+  realize(Service[$virtual_service])
+
   Package               <| title  == $package_name      |> ->
   Exec                  <| tag    == 'splunk_forwarder' |> ->
   Service               <| title  == $virtual_service   |>
